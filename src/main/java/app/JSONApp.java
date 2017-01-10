@@ -51,7 +51,7 @@ public class JSONApp {
                                             new JsonPair("passed", new JsonBoolean(true))
                                     ),
                                     new JsonObject(
-                                            new JsonPair("course", new JsonString("math")),
+                                            new JsonPair("course", new JsonString("Math")),
                                             new JsonPair("mark", new JsonNumber(2)),
                                             new JsonPair("passed", new JsonBoolean(false))))));
         return jsonObject;

@@ -5,66 +5,70 @@ import java.util.ArrayList;
  * Created by Andrii_Rodionov on 1/3/2017.
  */
 public class JsonObject extends Json {
-    private ArrayList<JsonPair> jsonPairs;
-    private int count;
+    private ArrayList<JsonPair> jsPairs = new ArrayList<>(); ;
+    private int counter;
 
     public JsonObject(JsonPair... jsonPairs) {
-        this.jsonPairs = new ArrayList<>();
-        for (JsonPair p : jsonPairs) {
-            add(p);
+        for(JsonPair jsp: jsonPairs){
+            this.add(jsp);
         }
     }
 
     @Override
     public String toJson() {
         String res = "";
-        if(this.jsonPairs.isEmpty()){
+        int counter = 0;
+        if(this.jsPairs.isEmpty()){
             return "{}";
         }
-        for(JsonPair jp : this.jsonPairs){
-            if(this.count == 1){
-                return "{' " + jp.key + " ': " + jp.value.toJson()+ "}" ;
+
+        for(JsonPair jp : this.jsPairs){
+            if(this.counter ==1){
+                return "{'" + jp.key + "': " + jp.value.toJson()+ "}" ;
             }
-            if(this.count == 0){
+            if(counter == 0){
                 res += "{'" + jp.key + "': " + jp.value.toJson() ;
-                count++;
+                counter++;
             }
-            else if(this.count < this.count - 1){
-                res += ", ' " + jp.key + " ': " + jp.value.toJson() ;
-                count++;
+            else if(counter < this.counter - 1){
+                res += ", '" + jp.key + "': " + jp.value.toJson() ;
+                counter++;
             }
             else{
-                res += ", ' " + jp.key + " ': " + jp.value.toJson() + "}";
+                res += ", '" + jp.key + "': " + jp.value.toJson() + "}";
             }
+
         }
         return res;
     }
 
     public void add(JsonPair jsonPair) {
-        jsonPairs.add(jsonPair);
+        boolean val = false;
+        if(!val){
+            this.jsPairs.add(jsonPair);
+            this.counter++;
+        }
+
     }
 
     public Json find(String name) {
-        Json res = null;
-        for (JsonPair pr : jsonPairs) {
-            if (pr.key.equals(name)) {
-                res = pr.value;
-                break;
+        for(JsonPair jsp: this.jsPairs){
+            if (jsp.key.equals(name)){
+                return jsp.value;
             }
         }
-        return res;
+        return null;
     }
 
     public JsonObject projection(String... names) {
-        JsonObject pnOfObject = new JsonObject();
-        for (String key : names) {
-            for (JsonPair pr : jsonPairs) {
-                if (pr.key.equals(key)) {
-                    pnOfObject.add(pr);
+        JsonObject jsObj = new JsonObject();
+        for(JsonPair jsp : this.jsPairs){
+            for( String proj: names){
+                if(jsp.key.equals(proj)){
+                    jsObj.add(jsp);
                 }
             }
         }
-
-        return pnOfObject;
+        return jsObj;
     }
 }
